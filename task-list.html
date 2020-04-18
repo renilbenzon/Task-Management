@@ -1,0 +1,27 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+</head>
+
+
+<body style="background-color:powderblue;">
+
+{% extends "main.html" %}
+{% block title %} List | {% endblock %}
+{% if user %}
+  {% block section %}
+  {% endblock %}
+{% endif %}
+{% block content %}
+<h4 style="color:blue;">List of Electric Vehicles</h4>
+<div>
+{% if newtasks|length == 0 %} -- No Electric Vehicles found -- {% endif %}
+<ol type="1">
+{% for newtask in newtasks %}
+  <li><a href="/newtask?taskname={{ newtask.taskname }}">{{ newtask.taskname }}</a></li>
+{% endfor %}
+</ol>
+{% endblock %}
+
+</body>
+</html>

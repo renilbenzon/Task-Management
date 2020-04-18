@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>{% block title %}Home | {% endblock %}Task Board Management System</title>
+		<style>
+			body{
+
+				font-size: 18px;
+			}
+			button, input{
+				font-size: 16px;
+				border: 1px solid black;
+			}
+			input[type=checkbox]{
+				width: 20px;
+    		height: 20px;
+				margin: 0;
+				padding: 0
+    	}
+			li{margin: 10px;}
+			table{font-size: 18px}
+		</style>
+	</head>
+	<body>
+		<div style="width: 900px;height: auto;margin: 0 auto; border: 1px solid grey; padding: 0 10px">
+			<h3 style="text-align:center">Task Board Management System</h3>
+			{% block session %}
+
+			{% if user %}
+				<p style="text-align:right"> Welcome {{ user.email() }}<br/> <a href="{{ url }}">Click to {{ url_string }}</a></p>
+			{% else %}
+				<p style=""> Welcome to the Application<br/> Click to<a href="{{ url }}"> {{ url_string }}</a></p>
+			{% endif %}
+		{% endblock %}
+		{% block menu %}
+			{% if user %}
+				<div style="padding: 5px 0; border-bottom: 1px solid grey">
+					<table style="width:100%;text-align:center">
+						<tr>
+							<td><a href="/newtask">Create a Task</a></td>
+							<td><a href="/newtask/list"> Tasks Collection</a></td>
+<u><font face="verdana" size="5" color="red">Information New user need to Note</font></u>
+<br>
+<ul>
+  <li>
+<font face="verdana" size="2" color="green">Click the button </font>
+<u><font face="verdana" size="3" color="Black">Create a Task </u></font>
+<font face="verdana" size="2" color="green">to generate a new Task Under this user.</font>
+</ul>
+</li>
+<br>
+
+<ul>
+  <li>
+<font face="verdana" size="2" color="green">Click the button </font>
+<u><font face="verdana" size="3" color="Black">Tasks Collection </u></font>
+<font face="verdana" size="2" color="green">to view all the Task Under this user.</font>
+</ul>
+</li>
+
+						</tr>
+					</table>
+				</div>
+		{% endif %}
+		{% endblock %}
+		<div>{% block content %} {% endblock %}</div>
+	</div>
+	<!--<footer style="text-align:center">Developed By: Christy Kunjappy [2983414]</footer>-->
+	</body>
+</html>

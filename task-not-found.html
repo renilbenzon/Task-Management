@@ -1,0 +1,10 @@
+{% extends "main.html" %}
+{% if user %}
+  {% block session %}
+  {% endblock %}
+{% endif %}
+{% block menu %}
+{% endblock %}
+{% block content %}
+<p>Electric Vehicle Management '{{ evname }}' not found</p>
+{% endblock %}
