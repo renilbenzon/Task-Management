@@ -37,24 +37,29 @@ div {
   <tr><td>  Date </td><td> <input type="date" name="doi" placeholder="YYYY-MM-DD" value="{{ newtask.date}}"/></td></tr>
 
   <tr><td>  Task Detail </td><td> <input type="text" name="details" placeholder="Worldwide Harmonised Light Vehicle Test Procedure" value="{{newtask.details}}" /></td></tr>
-  <tr><td>  Notes </td><td> <input type="text" name="notes" placeholder="Cost of the Vehicle" value="{{newtask.notes}}" /></td></tr>
+  <tr><td>  Notes  </td><td> <input type="text" name="notes" placeholder="Worldwide Harmonised Light Vehicle Test Procedure" value="{{newtask.notes}}" /></td></tr>
+  <tr><td>  Status </td><td><input type="checkbox" name="status" value="status" {% if newtask.status %} checked="true" {% endif %}/></td></tr>
+  <p> Let the status unmarked if creating a new TASK ,You can change it in editing section to completed or not completed</p>
+
 
     <tr><td></td><td><button>{{ label }}</button></td></tr>  <!-- ADD BUTTON -->
     <!-- <tr><td></td><td><button>Submit</button><button>Cancel</button></td></tr> -->
 </table>
 </form>
 {% else %}
-<h4>Electric Vehicle Editing and Deleting</h4>
+<h4>Task Management System Editing </h4>
 <a href="/newtask?edit=true&taskname={{ newtask.taskname }}">Edit</a>
 <br>
-<a href="/newtask?delete=true&taskname={{ newtask.taskname }}">Delete</a>
+
 <br>
 <tr><td>  Task Name </td><td> {{ newtask.taskname }}</td></tr>
 <tr><td>  Task User </td><td> {{ newtask.useraddress }}</td></tr>
 <tr><td>  Date Started </td><td> {{ newtask.date}}</td></tr>
-
 <tr><td>  Task Detail </td><td> {{ newtask.details }}</td></tr>
 <tr><td>  Notes </td><td> {{ newtask.notes }}</td></tr>
+
+
+
 {% endif %}
 {% endblock %}
 </body>

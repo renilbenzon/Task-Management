@@ -1,0 +1,71 @@
+<html>
+<head>
+
+  <style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+
+
+<meta charset="utf-8"/>
+</head>
+
+
+<body style="background-color:powderblue;">
+
+{% extends "main.html" %}
+{% block title %} List | {% endblock %}
+{% if user %}
+  {% block section %}
+  {% endblock %}
+{% endif %}
+{% block content %}
+<h4 style="color:blue;">Task Board Management </h4>
+<div>
+{% if newtasks|length == 0 %} -- No Tasks found -- {% endif %}
+<table style="width:100%">
+{% for newtask in newtasks %}
+  <tr>
+
+    <th>Task Name</th>
+    <th>Task User</th>
+    <th>Invite User </th>
+    <th>Created Date</th>
+    <th>Current Status</th>
+    <th>Details</th>
+    <th>Notes</th>
+  </tr>>
+
+<tr>
+
+  <td> {{ newtask.taskname }}</td>
+  <td> {{ newtask.useraddress }}</td>
+  <td> {{""}}</td>
+  <td> {{ newtask.date}}</td>
+  <td> {{newtask.status}} </td>
+
+
+
+
+
+
+  <td> {{ newtask.details }}</td>
+  <td> {{ newtask.notes }}</td>
+
+  </tr>
+
+
+
+  {% endfor %}
+  </table>
+
+{% endblock %}
+
+
+
+
+
+
+</body>
+</html>

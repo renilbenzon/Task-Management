@@ -20,9 +20,16 @@ class TASKMyUser(ndb.Model):
     date = ndb.DateProperty()
     details = ndb.StringProperty()
     notes = ndb.StringProperty()
+    status= ndb.StringProperty()
 
 
-# creating an object of the EVehicle class
+class TASKUser(ndb.Model):
+    username = ndb.StringProperty(indexed=True)
+    emailaddress = ndb.StringProperty()
+    task = ndb.StringProperty()
+
+
+# creating an object of the Task Management System class
 
 # TASKMyUsers
 # Function: get
@@ -33,6 +40,41 @@ class TASKMyUser(ndb.Model):
 #   HTTP post request hander to create or update TASKMyUser to DataStore based on action parameter
 # Function: update
 #   Function to update the values of the TASKMyUser to DataStore
+
+
+
+
+class TASKMyUsers(webapp2.RequestHandler):
+
+    def get(self,newtask):
+        PAGE_SIZE = 50
+        user = users.get_current_user()
+        template_values = {}
+        if user:
+            url = users.create_logout_url('/')
+            url_string = 'logout'
+        else:
+            self.redirect(users.create_login_url('/'))
+            return
+
+        newtasks, nextCursor, more = TASKMyUser.query().fetch_page(PAGE_SIZE)
+        template_values = {
+            'url': url,
+            'url_string': url_string,
+            'user': user,
+            'newtasks': newtasks
+        }
+        template = JINJA_ENVIRONMENT.get_template('task-user.html')
+        self.response.write(template.render(template_values))
+
+
+
+        username = self.request.get('username'),
+        emailaddress = self.request.get('emailaddress'),
+        task = self.request.get('task'),
+        task=taskname_key.get()
+        newtask.put()
+
 
 class TASKMyUsers(webapp2.RequestHandler):
 
@@ -81,14 +123,8 @@ class TASKMyUsers(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
-    def delete_entity(self, newtask):
-        newtaskName = self.request.get('taskname')
-        if newtaskName:
-            newtaskKey = ndb.Key('TASKMyUser', newtaskName)
-            newtask = newtaskKey.get()
-            if self.request.get('delete') == 'true':
-                newtaskName.key.delete()
-                
+
+
 
 
     def post(self):
@@ -110,7 +146,7 @@ class TASKMyUsers(webapp2.RequestHandler):
         date = self.request.get('doi'),
         details = self.request.get('details'),
         notes = self.request.get('notes')
-
+        status = self.request.get('status')
         newtaskKey = None
         newtask = None
         if oldName != '':
@@ -165,8 +201,17 @@ class TASKMyUsers(webapp2.RequestHandler):
         newtask.date = datetime.strptime(self.request.get('doi'), "%Y-%m-%d")
         newtask.details = self.request.get('details')
         newtask.notes = self.request.get('notes')
-
+        if self.request.get('status'):
+            newtask.status = "Completed"
+        else:
+            newtask.status = "Not Completed"
         newtask.put()
+
+
+
+
+
+
 
     def getAll():
         return TASKMyUser.query().fetch_page(PAGE_SIZE)
@@ -176,7 +221,7 @@ class TASKMyUsers(webapp2.RequestHandler):
         return newtaskKey.get()
 
 
-# EVList
+# TaskList
 # Function: get
 #   Function to handle HTTP get request
 #   Displays all the TASKMyUsers from DataStore as hyperlinks
@@ -204,14 +249,9 @@ class TASKList(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
-# EVCompare
-# Function: get
-# Function to handle HTTP get request to display a form with all TASKMyUsers with checkbox
-# Function; post
-# Function to handle HTTP post request to compare given GPUs and  diaplays in a table
 
 
-class EVCompare(webapp2.RequestHandler):
+class TaskBoard(webapp2.RequestHandler):
     def get(self):
         PAGE_SIZE = 50
         user = users.get_current_user()
@@ -223,88 +263,23 @@ class EVCompare(webapp2.RequestHandler):
             self.redirect(users.create_login_url('/'))
             return
 
-        newtasks, nextCursor, more = EVMyUser.query().fetch_page(PAGE_SIZE)
+        newtasks, nextCursor, more = TASKMyUser.query().fetch_page(PAGE_SIZE)
         template_values = {
             'url': url,
             'url_string': url_string,
             'user': user,
             'newtasks': newtasks
         }
-        template = JINJA_ENVIRONMENT.get_template('ev-compare-form.html')
-        self.response.write(template.render(template_values))
-
-    def post(self):
-        user = users.get_current_user()
-        template_values = {}
-        if user:
-            url = users.create_logout_url('/')
-            url_string = 'logout'
-        else:
-            self.redirect(users.create_login_url('/'))
-            return
-        newtask = self.request.params.getall('newtask')
-        if len(newtask) != 2:
-            message = ''
-            if (len(newtask) < 2):
-                message = 'Select 2 EVMyUsers to compare'
-            elif len(newtask) > 2:
-                message = 'Select at most 2 EVMyUsers to compare'
-
-            template = JINJA_ENVIRONMENT.get_template('error.html')
-            self.response.write(template.render({'message': message}))
-            return
-        newtaskKey = ndb.Key('EVMyUser', newtask[0])
-        newtask1 = newtaskKey.get()
-        newtaskKey = ndb.Key('EVMyUser', newtask[1])
-        newtask2 = newtaskKey.get()
-        template = JINJA_ENVIRONMENT.get_template('ev-compare.html')
-        template_values = {
-            'url': url,
-            'url_string': url_string,
-            'user': user,
-            'newtask1': newtask1,
-            'newtask2': newtask2
-        }
+        template = JINJA_ENVIRONMENT.get_template('task-board.html')
         self.response.write(template.render(template_values))
 
 
-# EVSearch
-# Function: get
-#   Function to handle HTTP get request
-#   Display the EVMyUsers satisfied by the search conditions from the user as hyperlinks
 
-class EVSearch(webapp2.RequestHandler):
-    def get(self):
-        PAGE_SIZE = 50
-        user = users.get_current_user()
-        template_values = {}
-        if user:
-            url = users.create_logout_url('/')
-            url_string = 'logout'
-        else:
-            self.redirect(users.create_login_url('/'))
-            return
-        query = EVMyUser.query()
-        search = {}
-        if self.request.get('taskname'):
-            query = query.filter(EVMyUser.taskname == taskname)
-            search['taskname'] = taskname
-
-        newtasks, nextCursor, more = query.fetch_page(PAGE_SIZE)
-        for newtask in newtasks:
-            print newtask.taskname
-        template_values = {
-            'url': url,
-            'url_string': url_string,
-            'user': user,
-            'newtasks': newtasks,
-            'search': search
-        }
-        template = JINJA_ENVIRONMENT.get_template('ev-search.html')
-        self.response.write(template.render(template_values))
 
 
 app = webapp2.WSGIApplication([
     ('/newtask', TASKMyUsers),
-    ('/newtask/list', TASKList)
+    ('/newtask/list', TASKList),
+    ('/newtask/board', TaskBoard),
+    ('/newtask/user', TASKUser)
 ], debug=True)

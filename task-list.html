@@ -13,9 +13,9 @@
   {% endblock %}
 {% endif %}
 {% block content %}
-<h4 style="color:blue;">List of Electric Vehicles</h4>
+<h4 style="color:blue;">List of Tasks</h4>
 <div>
-{% if newtasks|length == 0 %} -- No Electric Vehicles found -- {% endif %}
+{% if newtasks|length == 0 %} -- No Tasks found -- {% endif %}
 <ol type="1">
 {% for newtask in newtasks %}
   <li><a href="/newtask?taskname={{ newtask.taskname }}">{{ newtask.taskname }}</a></li>

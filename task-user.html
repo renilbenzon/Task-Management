@@ -1,0 +1,46 @@
+
+<html>
+<head>
+<meta charset="utf-8"/>
+</head>
+
+<body style="background-color:powderblue;">
+
+{% extends "main.html" %}
+{% block title %} {% if action == 'create' %}New | {% elif edit %}Update | {% else %}Details |{% endif %}  {% endblock %}
+{% if user %}
+  {% block section %}
+  {% endblock %}
+{% endif %}
+{% block content %}
+{% if edit %}
+
+<style>
+div {
+  background-color: lightgrey;
+  width: 500px;
+  border: 3px solid silver;
+  padding: 5px;
+  margin: 5px;
+
+</style>
+
+<body>
+<form method="get" action="/newtask?action={{ action }}">
+<h4>{{label}} Task Board Management </h4>
+
+<table>
+
+  <tr><td> Task Name </td><td><input type="text" name="username" required placeholder="Name of Electro Vehicle" value="{{ newtask.username }}"/></td></tr>
+  <tr><td>  Task User </td><td> <input type="text"  name="emailaddress" placeholder="Name of Manufacturer" value="{{ newtask.emailaddress }}"/></td></tr>
+  <tr><td>  Date </td><td> <input type="text" name="task" placeholder="YYYY-MM-DD" value="{{ newtask.task}}"/></td></tr>
+
+
+
+    <tr><td></td><td><button>{{ label }}</button></td></tr>  <!-- ADD BUTTON -->
+    <!-- <tr><td></td><td><button>Submit</button><button>Cancel</button></td></tr> -->
+</table>
+</form>
+{% endblock %}
+</body>
+</html>
